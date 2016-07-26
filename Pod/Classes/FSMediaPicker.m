@@ -145,19 +145,13 @@ NSString const * UIImagePickerControllerCircularEditedImage = @" UIImagePickerCo
         
         plCropOverlay.hidden = YES;
         
-        int position = 0;
-        
-        if (screenHeight == 568){
-            position = 124;
-        } else {
-            position = 80;
-        }
-        
         BOOL isIpad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
         
         CAShapeLayer *circleLayer = [CAShapeLayer layer];
         
         CGFloat diameter = isIpad ? MAX(plCropOverlay.frame.size.width, plCropOverlay.frame.size.height) : MIN(plCropOverlay.frame.size.width, plCropOverlay.frame.size.height);
+        
+        int position = [UIScreen mainScreen].bounds.size.height / 2 - (diameter / 2);
 
         UIBezierPath *circlePath = [UIBezierPath bezierPathWithOvalInRect:
                                CGRectMake(0.0f, position, diameter, diameter)];
@@ -181,7 +175,8 @@ NSString const * UIImagePickerControllerCircularEditedImage = @" UIImagePickerCo
         
         
         if (!isIpad) {
-            UILabel *moveLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, 320, 50)];
+            CGFloat width = 320;
+            UILabel *moveLabel = [[UILabel alloc] initWithFrame:CGRectMake(viewController.view.frame.size.width / 2 - (width / 2), 10, width, 50)];
             [moveLabel setText:@"Move and Scale"];
             [moveLabel setTextAlignment:NSTextAlignmentCenter];
             [moveLabel setTextColor:[UIColor whiteColor]];
@@ -295,36 +290,36 @@ NSString const * UIImagePickerControllerCircularEditedImage = @" UIImagePickerCo
     switch (self.mediaType) {
         case FSMediaTypePhoto:
         {
-            [alertController addAction:[UIAlertAction actionWithTitle:kTakePhotoString style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Take Photo" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                 [self takePhotoFromCamera];
             }]];
-            [alertController addAction:[UIAlertAction actionWithTitle:kSelectPhotoFromLibraryString style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Select Photo From Library" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                 [self takePhotoFromPhotoLibrary];
             }]];
             break;
         }
         case FSMediaTypeVideo:
         {
-            [alertController addAction:[UIAlertAction actionWithTitle:kRecordVideoString style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Record Video" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                 [self takeVideoFromCamera];
             }]];
-            [alertController addAction:[UIAlertAction actionWithTitle:kSelectVideoFromLibraryString style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Select Video From Library" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                 [self takeVideoFromPhotoLibrary];
             }]];
             break;
         }
         case FSMediaTypeAll:
         {
-            [alertController addAction:[UIAlertAction actionWithTitle:kTakePhotoString style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Take Photo" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                 [self takePhotoFromCamera];
             }]];
-            [alertController addAction:[UIAlertAction actionWithTitle:kSelectPhotoFromLibraryString style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Select Photo From Library"  style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                 [self takePhotoFromPhotoLibrary];
             }]];
-            [alertController addAction:[UIAlertAction actionWithTitle:kRecordVideoString style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Record Video"  style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                 [self takeVideoFromCamera];
             }]];
-            [alertController addAction:[UIAlertAction actionWithTitle:kSelectVideoFromLibraryString style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Select Video From Library"  style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                 [self takeVideoFromPhotoLibrary];
             }]];
             break;
@@ -332,7 +327,7 @@ NSString const * UIImagePickerControllerCircularEditedImage = @" UIImagePickerCo
         default:
             break;
     }
-    [alertController addAction:[UIAlertAction actionWithTitle:kCancelString style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
         [self delegatePerformCancel];
     }]];
     alertController.popoverPresentationController.sourceView = view;
